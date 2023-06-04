@@ -1,6 +1,6 @@
 FROM ttbb/kafka-ui:nake
 
-COPY docker-build /opt/kafka-ui/mate
+COPY scripts /opt/kafka-ui/mate/scripts
 
 WORKDIR /opt/kafka-ui
 
