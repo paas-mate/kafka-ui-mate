@@ -16,19 +16,7 @@ fi
 JVM_OPT="${JVM_OPT} -XX:+UseG1GC -XX:MaxGCPauseMillis=10 -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions"
 JVM_OPT="${JVM_OPT} -XX:+DoEscapeAnalysis -XX:ParallelGCThreads=${GC_THREADS} -XX:ConcGCThreads=${GC_THREADS}"
 # gc log option
-JVM_OPT="${JVM_OPT} -Xlog:gc*=info,gc+phases=debug:/opt/perf/logs/gc.log:time,uptime:filecount=10,filesize=100M"
+JVM_OPT="${JVM_OPT} -Xlog:gc*=info,gc+phases=debug:${KAFKA_UI_HOME}/logs/gc.log:time,uptime:filecount=10,filesize=100M"
 
-# skywalking java agent option
-if [ -n "${SW_AGENT_ENABLE}" ]; then
-  if [ ! -n "${SW_SERVICE_NAME}" ]; then
-    SW_SERVICE_NAME="perf-mq-consumer"
-  fi
-  if [ ! -n "${SW_COLLECTOR_URL}" ]; then
-    SW_COLLECTOR_URL="localhost:11800"
-  fi
-  # ignore springmvc agent plugin
-  rm -rf /opt/perf/skywalking-agent/plugins/apm-springmvc-annotation*
-  AGENT_OPT="-javaagent:/opt/perf/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=${SW_SERVICE_NAME} -Dskywalking.collector.backend_service=${SW_COLLECTOR_URL}"
-fi
-
-java $AGENT_OPT $JAVA_OPT $JVM_OPT -jar ${KAFKA_UI_HOME}/kafka-ui-api.jar >> /opt/perf/logs/stdout.log 2 >> /opt/perf/logs/stderr.log
+mkdir ${KAFKA_UI_HOME}/logs
+java $AGENT_OPT $JAVA_OPT $JVM_OPT -jar ${KAFKA_UI_HOME}/kafka-ui-api.jar >> ${KAFKA_UI_HOME}/logs/stdout.log 2 >> ${KAFKA_UI_HOME}/logs/stderr.log
