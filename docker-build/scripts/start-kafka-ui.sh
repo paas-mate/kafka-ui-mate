@@ -18,5 +18,7 @@ JVM_OPT="${JVM_OPT} -XX:+DoEscapeAnalysis -XX:ParallelGCThreads=${GC_THREADS} -X
 # gc log option
 JVM_OPT="${JVM_OPT} -Xlog:gc*=info,gc+phases=debug:${KAFKA_UI_HOME}/logs/gc.log:time,uptime:filecount=10,filesize=100M"
 
+sed -i s/localhost:9092/${KAFKA_BOOTSTRAP_SERVER}/g ${KAFKA_UI_CONF_DIR}/config.yml
+
 mkdir ${KAFKA_UI_HOME}/logs
 java $AGENT_OPT $JAVA_OPT $JVM_OPT -jar ${KAFKA_UI_HOME}/kafka-ui-api.jar >> ${KAFKA_UI_HOME}/logs/stdout.log 2 >> ${KAFKA_UI_HOME}/logs/stderr.log

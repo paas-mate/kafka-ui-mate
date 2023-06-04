@@ -1,0 +1,9 @@
+kafka:
+  clusters:
+    -
+      name: kafka-0
+      bootstrapServers: localhost:9092
+      #     schemaNameTemplate: "%s-value"
+      metrics:
+        port: 9997
+        type: JMX
